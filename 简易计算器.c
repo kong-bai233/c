@@ -19,6 +19,12 @@ int main()
         if(c=='/') {
             printf("%g\n\n",a/b);
         }
+        if(c=='!') {
+            for(int i=a-1; i>0; i--) {
+                a=a*i;
+            }
+            printf("%g\n\n",a);
+        }
         if(a==0&&c=='*'&&b==0) {
             break;
         }
