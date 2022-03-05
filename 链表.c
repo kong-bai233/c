@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-int len;  //链表长度
-/**结构体**/
+int len; //链表长度
 struct student{
 	char name[30];
 	float number;
 	struct student *pNext;
 };
-/**动态创建链表**/
+/*创建*/ 
 struct student *create(){
 	struct student *pHead=NULL;
 	struct student *pNew,*pEnd;
@@ -32,23 +31,23 @@ struct student *create(){
 	free(pNew);
 	return pHead;
 }
-/**插入头结点**/
-struct student *join(struct student *pHead){
+/*头表后加入*/
+struct student *addah(struct student *pHead){
 	struct student *pNew,*tep;
 	pNew=(struct student*)malloc(sizeof(struct student));
-	printf("输入新数据：");
+	printf("姓名 学号：");
 	scanf("%s %f",&pNew->name,&pNew->number);
 	pNew->pNext=pHead->pNext;
 	pHead->pNext=pNew;
 	len+=1;
 	return pHead;
 }
-/**插入尾结点**/
-struct student *endjoin(struct student *pHead){
+/*加入结尾*/ 
+struct student *addend(struct student *pHead){
 	struct student *tep,*pNew;
 	pNew=(struct student*)malloc(sizeof(struct student));
 	tep=pHead;
-	printf("输入新数据：");
+	printf("姓名 学号：");
 	scanf("%s %f",&pNew->name,&pNew->number);
 	pNew->pNext=NULL;
 	while(tep->pNext!=NULL){
@@ -58,50 +57,7 @@ struct student *endjoin(struct student *pHead){
 	len+=1;
 	return pHead;
 }
-/**指定位置插入节点**/
-struct student *leadjoin(struct student *pHead){
-	int lead=2,lead_;
-	struct student *pNew,*search,*before,*next,*p;
-	pNew=(struct student*)malloc(sizeof(struct student));
-	printf("输入新数据：");
-	scanf("%s %f",&pNew->name,&pNew->number);
-	printf("输入要加入的位置：");
-	scanf("%d",&lead_);
-	if(lead_>(len+1)){
-		printf("找不到此位置\n\n");
-		return pHead;
-	}
-	before=pHead;
-	search=pHead->pNext;
-	next=search->pNext;
-	while(1){
-		if(lead_==1){
-			pNew->pNext=pHead;
-			len++;
-			return pNew;
-		}
-		if(len==(lead+1)){
-			while(before->pNext!=NULL){
-				before=before->pNext;
-			}
-			before->pNext=pNew;
-			pNew->pNext=NULL;
-			len++;
-			return pHead;
-		}
-		if(lead==lead_){
-			pNew->pNext=search;
-			before->pNext=pNew;
-			len++;
-			return pHead;
-		}
-		lead+=1;
-		before=before->pNext;
-		search=search->pNext;
-		next=next->pNext;
-	}
-}
-/**指定位置删除节点**/
+/*指定位置删除*/ 
 struct student *del(struct student *pHead){
 	struct student *before,*next,*search;
 	char data_name[30];
@@ -110,7 +66,7 @@ struct student *del(struct student *pHead){
 	before=pHead;
 	search=pHead->pNext;
 	next=search->pNext;
-	printf("输入位置：");
+	printf("输入要删除的位置：");
 	scanf("%d",&lead);
 	while(1){
 		if(lead==1){
@@ -130,7 +86,44 @@ struct student *del(struct student *pHead){
 	len--;
 	return pHead;
 }
-/**遍历链表**/
+/*指定位置加入*/ 
+struct student *addlocation(struct student *pHead){
+	struct student *pBefore,*p,*pNew;
+	p=pHead->pNext;
+	pBefore=pHead;
+	int location,n=2;
+	pNew=(struct student*)malloc(sizeof(struct student));
+	printf("姓名 学号：");
+	scanf("%s %f",&pNew->name,&pNew->number);
+	printf("要加入的位置：");
+	scanf("%d",&location);
+	if(location==1){
+		pNew->pNext=pHead;
+		len+=1;
+		return pNew;
+	}
+	if(location==(len+1)){
+		while(p->pNext!=NULL){
+			p=p->pNext;
+		}
+		pNew->pNext=NULL;
+		p->pNext=pNew;
+		len+=1;
+		return pHead;
+	}
+	else{
+		while(n!=location){
+			n++;
+			p=p->pNext;
+			pBefore=pBefore->pNext;
+		}
+		pNew->pNext=p;
+		pBefore->pNext=pNew;
+		len+=1;
+		return pHead;
+	}
+}
+/*遍历*/ 
 void print(struct student *pHead){
 	struct student *tep;
 	int i=1;
@@ -144,16 +137,15 @@ void print(struct student *pHead){
 	}
 	printf("\n\n");
 }
-/**主函数**/
 int main(){
 	struct student *pHead;
 	pHead=create();
 	print(pHead);
-	pHead=join(pHead);
+	pHead=addah(pHead);
 	print(pHead);
-	pHead=endjoin(pHead);
+	pHead=addend(pHead);
 	print(pHead);
-	pHead=leadjoin(pHead);
+	pHead=addlocation(pHead);
 	print(pHead);
 	pHead=del(pHead);
 	print(pHead);
